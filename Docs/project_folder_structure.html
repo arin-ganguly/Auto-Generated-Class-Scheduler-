@@ -1,0 +1,75 @@
+
+<style>
+.tree { font-family: var(--font-mono); font-size: 13px; line-height: 1.8; color: var(--color-text-primary); padding: 1.2rem 1.4rem; }
+.dir { color: #185FA5; font-weight: 500; }
+.file { color: var(--color-text-primary); }
+.comment { color: var(--color-text-tertiary); font-size: 11.5px; margin-left: 6px; }
+.indent1 { padding-left: 20px; }
+.indent2 { padding-left: 40px; }
+.indent3 { padding-left: 60px; }
+.indent4 { padding-left: 80px; }
+.badge { display: inline-block; font-size: 10px; font-family: var(--font-sans); padding: 1px 7px; border-radius: 4px; margin-left: 8px; vertical-align: middle; font-weight: 500; }
+.b-react  { background: #E6F1FB; color: #185FA5; }
+.b-spring { background: #E1F5EE; color: #085041; }
+.b-python { background: #EEEDFE; color: #534AB7; }
+.b-root   { background: #F1EFE8; color: #5F5E5A; }
+</style>
+<div class="tree">
+
+<div><span class="dir">college-scheduler/</span> <span class="badge b-root">monorepo root</span></div>
+
+<div class="indent1"><span class="file">├── docker-compose.yml</span> <span class="comment">— orchestrates all 3 services + DB</span></div>
+<div class="indent1"><span class="file">├── .env</span> <span class="comment">— shared environment variables</span></div>
+<div class="indent1"><span class="file">├── .gitignore</span></div>
+<div class="indent1"><span class="file">└── README.md</span></div>
+
+<div style="margin-top:10px"></div>
+
+<div class="indent1"><span class="dir">├── frontend/</span> <span class="badge b-react">React JS</span></div>
+<div class="indent2"><span class="file">├── public/</span></div>
+<div class="indent2"><span class="file">├── src/</span></div>
+<div class="indent3"><span class="file">├── assets/</span> <span class="comment">— icons, images</span></div>
+<div class="indent3"><span class="file">├── components/</span> <span class="comment">— reusable UI components</span></div>
+<div class="indent3"><span class="file">├── pages/</span> <span class="comment">— Login, Configure, Generate, Viewer</span></div>
+<div class="indent3"><span class="file">├── hooks/</span> <span class="comment">— custom React hooks</span></div>
+<div class="indent3"><span class="file">├── services/</span> <span class="comment">— Axios API call wrappers</span></div>
+<div class="indent3"><span class="file">├── store/</span> <span class="comment">— Zustand global state</span></div>
+<div class="indent3"><span class="file">├── utils/</span> <span class="comment">— formatters, helpers</span></div>
+<div class="indent3"><span class="file">└── App.jsx / main.jsx</span></div>
+<div class="indent2"><span class="file">├── .env</span></div>
+<div class="indent2"><span class="file">├── vite.config.js</span></div>
+<div class="indent2"><span class="file">└── package.json</span></div>
+
+<div style="margin-top:10px"></div>
+
+<div class="indent1"><span class="dir">├── backend/</span> <span class="badge b-spring">Spring Boot</span></div>
+<div class="indent2"><span class="file">├── src/</span> <span class="comment">— standard Spring Boot internals</span></div>
+<div class="indent2"><span class="file">├── Dockerfile</span></div>
+<div class="indent2"><span class="file">├── pom.xml</span></div>
+<div class="indent2"><span class="file">└── application.yml</span></div>
+
+<div style="margin-top:10px"></div>
+
+<div class="indent1"><span class="dir">├── ai-service/</span> <span class="badge b-python">Python · FastAPI</span></div>
+<div class="indent2"><span class="file">├── app/</span></div>
+<div class="indent3"><span class="file">├── api/</span> <span class="comment">— FastAPI route handlers</span></div>
+<div class="indent3"><span class="file">├── scheduler/</span></div>
+<div class="indent4"><span class="file">├── csp_solver.py</span> <span class="comment">— OR-Tools / python-constraint</span></div>
+<div class="indent4"><span class="file">├── ga_solver.py</span> <span class="comment">— DEAP genetic algorithm fallback</span></div>
+<div class="indent4"><span class="file">├── conflict_checker.py</span></div>
+<div class="indent4"><span class="file">└── time_slots.py</span> <span class="comment">— slot/period definitions</span></div>
+<div class="indent3"><span class="file">├── models/</span> <span class="comment">— Pydantic schemas (input/output)</span></div>
+<div class="indent3"><span class="file">├── utils/</span></div>
+<div class="indent3"><span class="file">└── main.py</span> <span class="comment">— FastAPI app entry point</span></div>
+<div class="indent2"><span class="file">├── tests/</span></div>
+<div class="indent2"><span class="file">├── Dockerfile</span></div>
+<div class="indent2"><span class="file">├── requirements.txt</span></div>
+<div class="indent2"><span class="file">└── .env</span></div>
+
+<div style="margin-top:10px"></div>
+
+<div class="indent1"><span class="dir">└── database/</span> <span class="badge b-root">PostgreSQL</span></div>
+<div class="indent2"><span class="file">├── migrations/</span> <span class="comment">— Flyway / Liquibase SQL scripts</span></div>
+<div class="indent2"><span class="file">└── seed/</span> <span class="comment">— sample data for dev/testing</span></div>
+
+</div>
