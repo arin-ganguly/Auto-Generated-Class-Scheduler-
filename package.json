@@ -1,0 +1,23 @@
+{
+  "name": "automated-class-schedular",
+  "version": "1.0.0",
+  "description": "Automated Class Scheduler is a full-stack project for institute onboarding, department and subject management, and AI-assisted timetable generation.",
+  "main": "index.js",
+  "scripts": {
+     "start-all": "concurrently \"cd college-scheduler && mvnw.cmd spring-boot:run\" \"cd \\\"AI service\\Time table generator\\\" && python -m uvicorn app:app --reload --port 8000\" \"cd frontend && npm run dev\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arin-ganguly/Auto-Generated-Class-Scheduler-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arin-ganguly/Auto-Generated-Class-Scheduler-/issues"
+  },
+  "homepage": "https://github.com/arin-ganguly/Auto-Generated-Class-Scheduler-#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

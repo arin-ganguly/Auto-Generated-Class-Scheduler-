@@ -28,6 +28,20 @@ Automated Class Schedular/
 - timetable preview in the web app
 - timetable download in `.xlsx` format
 
+## Screenshots
+
+### Login Page
+
+![Login Page](screenshots/login_page.png)
+
+### Dashboard Overview
+
+![Dashboard Overview](screenshots/dashboard_overview.png)
+
+### Generated Timetable Preview
+
+![Generated Timetable Preview](screenshots/generated_timetable_preview.png)
+
 ## Tech Stack
 
 ### Backend

@@ -539,6 +539,19 @@ button {
   margin-bottom: 14px;
 }
 
+.preview-launcher {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(67, 42, 24, 0.08);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.preview-launcher-copy {
+  margin: 0;
+}
+
 .table-wrap {
   overflow-x: auto;
   border-radius: var(--radius-lg);
@@ -571,6 +584,50 @@ button {
   font-weight: 700;
   color: var(--muted);
   background: rgba(234, 209, 220, 0.55);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(42, 29, 19, 0.42);
+  backdrop-filter: blur(10px);
+}
+
+.modal-card {
+  width: min(1180px, 100%);
+  max-height: min(88vh, 920px);
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(255, 250, 243, 0.96);
+}
+
+.modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.modal-close {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(42, 29, 19, 0.06);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.modal-card .table-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
 }
 
 .link-button {
@@ -636,6 +693,19 @@ button {
   .topbar,
   .subject-top {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-overlay {
+    padding: 12px;
+  }
+
+  .modal-card {
+    max-height: 92vh;
+    padding: 18px;
+  }
+
+  .modal-head {
     align-items: stretch;
   }
 

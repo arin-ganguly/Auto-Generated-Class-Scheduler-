@@ -38,6 +38,7 @@ function App() {
   const [editingSubjectId, setEditingSubjectId] = useState(null);
   const [timetableResult, setTimetableResult] = useState(null);
   const [selectedPreviewDepartment, setSelectedPreviewDepartment] = useState(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [busyKey, setBusyKey] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -57,6 +58,24 @@ function App() {
 
     refreshSubjects(selectedDepartmentId);
   }, [selectedDepartmentId, subjectFilter, session]);
+
+  useEffect(() => {
+    if (!isPreviewOpen) {
+      return undefined;
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setIsPreviewOpen(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPreviewOpen]);
 
   async function refreshDepartments() {
     if (!session) {
@@ -327,6 +346,7 @@ function App() {
       });
       setTimetableResult(data);
       setSelectedPreviewDepartment(data.departments[0]?.departmentName ?? null);
+      setIsPreviewOpen(true);
       setSuccess("Timetable generated successfully. You can preview it or download the Excel file.");
     } catch (requestError) {
       setError(requestError.message);
@@ -398,6 +418,8 @@ function App() {
           previewDepartment={previewDepartment}
           selectedPreviewDepartment={selectedPreviewDepartment}
           setSelectedPreviewDepartment={setSelectedPreviewDepartment}
+          isPreviewOpen={isPreviewOpen}
+          setIsPreviewOpen={setIsPreviewOpen}
           handleGenerateTimetable={handleGenerateTimetable}
           busyKey={busyKey}
           error={error}
@@ -582,6 +604,8 @@ function DashboardView({
   previewDepartment,
   selectedPreviewDepartment,
   setSelectedPreviewDepartment,
+  isPreviewOpen,
+  setIsPreviewOpen,
   handleGenerateTimetable,
   busyKey,
   error,
@@ -703,6 +727,15 @@ function DashboardView({
                   ? "Generating..."
                   : "Generate Timetable"}
               </button>
+              {timetableResult ? (
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() => setIsPreviewOpen(true)}
+                >
+                  Open Preview
+                </button>
+              ) : null}
               {timetableResult ? (
                 <a
                   className="ghost-button link-button"
@@ -882,54 +915,25 @@ function DashboardView({
             </div>
 
             {timetableResult && previewDepartment ? (
-              <>
-                <div className="preview-tabs">
-                  {timetableResult.departments.map((department) => (
-                    <button
-                      key={department.departmentName}
-                      className={
-                        selectedPreviewDepartment === department.departmentName
-                          ? "chip active"
-                          : "chip"
-                      }
-                      type="button"
-                      onClick={() =>
-                        setSelectedPreviewDepartment(department.departmentName)
-                      }
-                    >
-                      {department.departmentName}
-                    </button>
-                  ))}
-                </div>
-
+              <div className="preview-launcher">
                 <div className="preview-summary">
                   <span>Total subjects: {previewDepartment.summary.totalSubjects}</span>
                   <span>Theory: {previewDepartment.summary.theorySubjects}</span>
                   <span>Labs: {previewDepartment.summary.labSubjects}</span>
                   <span>Free periods: {previewDepartment.summary.freePeriods}</span>
                 </div>
-
-                <div className="table-wrap">
-                  <table className="timetable-table">
-                    <thead>
-                      <tr>
-                        <th>Slot</th>
-                        <th>Time</th>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {previewDepartment.slots.map((slot) => (
-                        <FragmentRow key={slot.slotCode} slot={slot} />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </>
+                <p className="muted-text preview-launcher-copy">
+                  Open the timetable in a popup window for a larger, easier-to-read
+                  preview.
+                </p>
+                <button
+                  className="primary-button"
+                  type="button"
+                  onClick={() => setIsPreviewOpen(true)}
+                >
+                  View Timetable Preview
+                </button>
+              </div>
             ) : (
               <EmptyState
                 title="No generated timetable yet"
@@ -939,7 +943,101 @@ function DashboardView({
           </section>
         </section>
       </section>
+
+      {isPreviewOpen && timetableResult && previewDepartment ? (
+        <div
+          className="modal-overlay"
+          role="presentation"
+          onClick={() => setIsPreviewOpen(false)}
+        >
+          <section
+            className="modal-card card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="timetable-preview-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="modal-head">
+              <div>
+                <div className="eyebrow">Popup Preview</div>
+                <h3 id="timetable-preview-title">Generated Timetable</h3>
+              </div>
+              <button
+                className="icon-button modal-close"
+                type="button"
+                aria-label="Close timetable preview"
+                onClick={() => setIsPreviewOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+
+            <TimetablePreviewContent
+              timetableResult={timetableResult}
+              previewDepartment={previewDepartment}
+              selectedPreviewDepartment={selectedPreviewDepartment}
+              setSelectedPreviewDepartment={setSelectedPreviewDepartment}
+            />
+          </section>
+        </div>
+      ) : null}
     </main>
+  );
+}
+
+function TimetablePreviewContent({
+  timetableResult,
+  previewDepartment,
+  selectedPreviewDepartment,
+  setSelectedPreviewDepartment
+}) {
+  return (
+    <>
+      <div className="preview-tabs">
+        {timetableResult.departments.map((department) => (
+          <button
+            key={department.departmentName}
+            className={
+              selectedPreviewDepartment === department.departmentName
+                ? "chip active"
+                : "chip"
+            }
+            type="button"
+            onClick={() => setSelectedPreviewDepartment(department.departmentName)}
+          >
+            {department.departmentName}
+          </button>
+        ))}
+      </div>
+
+      <div className="preview-summary">
+        <span>Total subjects: {previewDepartment.summary.totalSubjects}</span>
+        <span>Theory: {previewDepartment.summary.theorySubjects}</span>
+        <span>Labs: {previewDepartment.summary.labSubjects}</span>
+        <span>Free periods: {previewDepartment.summary.freePeriods}</span>
+      </div>
+
+      <div className="table-wrap">
+        <table className="timetable-table">
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Time</th>
+              <th>Mon</th>
+              <th>Tue</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+            </tr>
+          </thead>
+          <tbody>
+            {previewDepartment.slots.map((slot) => (
+              <FragmentRow key={slot.slotCode} slot={slot} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
